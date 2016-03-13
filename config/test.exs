@@ -17,3 +17,6 @@ config :bones, Bones.Repo,
   database: "bones_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Configure encryption
+config :comeonin, bcrypt_log_rounds: 5
