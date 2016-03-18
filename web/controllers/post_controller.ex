@@ -23,7 +23,7 @@ defmodule Bones.PostController do
       {:ok, _post} ->
         conn
         |> put_flash(:info, "Post created successfully.")
-        |> redirect(to: user_post_path(conn, :index))
+        |> redirect(to: user_post_path(conn, :index, conn.assigns[:user]))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -48,7 +48,7 @@ defmodule Bones.PostController do
       {:ok, post} ->
         conn
         |> put_flash(:info, "Post updated successfully.")
-        |> redirect(to: user_post_path(conn, :show, post))
+        |> redirect(to: user_post_path(conn, :show, conn.assigns[:user], post))
       {:error, changeset} ->
         render(conn, "edit.html", post: post, changeset: changeset)
     end
@@ -63,7 +63,7 @@ defmodule Bones.PostController do
 
     conn
     |> put_flash(:info, "Post deleted successfully.")
-    |> redirect(to: user_post_path(conn, :index))
+    |> redirect(to: user_post_path(conn, :index, conn.assigns[:user]))
   end
   defp assign_user(conn, _opts) do
     case conn.params do
