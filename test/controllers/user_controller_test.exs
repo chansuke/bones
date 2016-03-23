@@ -6,6 +6,22 @@ defmodule Bones.UserControllerTest do
   @valid_attrs %{email: "test@test.com", username: "testuser"}
   @invalid_attrs %{}
 
+  setup do
+    {:ok, user} = create_user
+    conn = conn()
+    |> login_user(user)
+    {:ok, conn: conn, user: user}
+  end
+
+  defp create_user do
+    User.changeset(%User{}, %{email: "test@test.com", username: "test", password: "test", password_confirmation: "test"})
+    |> Repo.insert
+  end
+
+  defp login_user(conn, user) do
+    post conn, session_path(conn, :create), user: %{username: user.username, password: user.password}
+  end
+
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, user_path(conn, :index)
     assert html_response(conn, 200) =~ "Listing users"

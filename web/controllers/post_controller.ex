@@ -21,10 +21,7 @@ defmodule Bones.PostController do
   end
 
   def create(conn, %{"post" => post_params}) do
-    changeset =
-      conn.assigns[:user]
-      |> build_assoc(:posts)
-      |> Post.changeset(post_params)
+    changeset = Post.changeset(%Post{}, post_params)
 
     case Repo.insert(changeset) do
       {:ok, _post} ->
@@ -48,8 +45,9 @@ defmodule Bones.PostController do
   end
 
   def update(conn, %{"id" => id, "post" => post_params}) do
-    post = Repo.get!(assoc(conn.assigns[:user], :posts), id)
+    post = Repo.get!(Post, id)
     changeset = Post.changeset(post, post_params)
+
     case Repo.update(changeset) do
       {:ok, post} ->
         conn
@@ -61,7 +59,7 @@ defmodule Bones.PostController do
   end
 
   def delete(conn, %{"id" => id}) do
-    post = Repo.get!(assoc(conn.assigns[:user], :posts), id)
+    post = Repo.get!(Post, id)
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(post)

@@ -8,6 +8,10 @@ defmodule Bones.User do
     field :password_digest, :string
     has_many :posts, Bones.Post
 
+    has_many :users, Bones.User
+
+    belongs_to :role, Bones.Role
+
     timestamps
 
     # Virtual Fields
@@ -15,7 +19,7 @@ defmodule Bones.User do
     field :password_confirmation, :string, virtual: true
   end
 
-  @required_fields ~w(username email password password_confirmation)
+  @required_fields ~w(username email password password_confirmation role_id)
   @optional_fields ~w()
 
   @doc """

@@ -1,5 +1,5 @@
 defmodule Bones.LayoutViewTest do
-  use Bones.ConnCase, async: true
+  use Bones.ConnCase
   alias Bones.LayoutView
   alias Bones.User
 
@@ -15,7 +15,7 @@ defmodule Bones.LayoutViewTest do
     assert LayoutView.current_user(conn)
   end
 
-  test "current user return nothing if there is no user in the session" do
+  test "current user returns nothing if there is no user in the session" do
     user = Repo.get_by(User, %{username: "test"})
     conn = delete conn, session_path(conn, :delete, user)
     refute LayoutView.current_user(conn)
